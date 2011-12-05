@@ -35,12 +35,11 @@ class Bug(RemoteObject):
     id = fields.Field()
     summary = fields.Field()
     assigned_to = fields.Object('User')
-    reporter = fields.Object('User')
+    creator = fields.Object('User')
     target_milestone = fields.Field()
     attachments = fields.List(fields.Object('Attachment'))
     comments = fields.List(fields.Object('Comment'))
     history = fields.List(fields.Object('Changeset'))
-    keywords = fields.List(fields.Object('Keyword'))
     status = fields.Field()
     resolution = fields.Field()
 
@@ -49,9 +48,7 @@ class Bug(RemoteObject):
     creation_time = Datetime(DATETIME_FORMAT_WITH_SECONDS)
     flags = fields.List(fields.Object('Flag'))
     blocks = fields.List(fields.Field())
-    #depends_on = CommaSeparatedBugs(FooLink(fields.Object('Bug')))
-    #depends_on = fields.List(BugLink(fields.Object('Bug')))
-    #depends_on = BugLink(fields.List(fields.Object('Bug')))
+    depends_on = fields.List(fields.Field())
     url = fields.Field()
     cc = fields.List(fields.Object('User'))
     keywords = fields.List(fields.Field())
@@ -71,7 +68,7 @@ class Bug(RemoteObject):
     component = fields.Field()
     is_cc_accessible = StringBoolean()
     is_everconfirmed = StringBoolean()
-    is_reporter_accessible = StringBoolean()
+    is_creator_accessible = StringBoolean()
     last_change_time = Datetime(DATETIME_FORMAT_WITH_SECONDS)
     ref = fields.Field()
 
@@ -212,22 +209,6 @@ class Flag(RemoteObject):
         return self.id
 
 
-class Keyword(RemoteObject):
-
-    name = fields.Field()
-
-    def __repr__(self):
-        return '<Keyword "%s">' % self.name
-
-    def __str__(self):
-        return self.name
-
-    def __hash__(self):
-        if not self or not self.name:
-            return 0
-        return self.name.__hash__()
-
-
 class BugSearch(RemoteObject):
-    
+
     bugs = fields.List(fields.Object('Bug'))
