@@ -10,7 +10,8 @@ class InvalidAPI_ROOT(Exception):
                "or pass it to the agent constructor"
 
 class BugzillaAgent(object):
-    def __init__(self, api_root=None, username=None, password=None):
+    def __init__(self, api_root=None, username=None, password=None, http=None):
+        self.http = http
 
         if not api_root:
             api_root = os.environ.get('BZ_API_ROOT')
@@ -25,11 +26,11 @@ class BugzillaAgent(object):
         params['exclude_fields'] = exclude_fields
 
         url = urljoin(self.API_ROOT, 'bug/%s?%s' % (bug, self.qs(**params)))
-        return Bug.get(url)
+        return Bug.get(url, http=self.http)
 
     def get_bug_list(self, params={}):
         url = url = urljoin(self.API_ROOT, 'bug/?%s' % (self.qs(**params)))
-        return BugSearch.get(url).bugs
+        return BugSearch.get(url, http=self.http).bugs
 
     def qs(self, **params):
         if self.username and self.password:
@@ -39,5 +40,5 @@ class BugzillaAgent(object):
 
 
 class BMOAgent(BugzillaAgent):
-    def __init__(self, username=None, password=None):
-        super(BMOAgent, self).__init__('https://api-dev.bugzilla.mozilla.org/latest/', username, password)
+    def __init__(self, username=None, password=None, http=None):
+        super(BMOAgent, self).__init__('https://api-dev.bugzilla.mozilla.org/latest/', username=username, password=password, http=http)
