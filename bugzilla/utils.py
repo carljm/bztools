@@ -24,7 +24,7 @@ def get_credentials(username=None):
         username = os.environ.get('BZ_USERNAME', None)
     password = os.environ.get('BZ_PASSWORD', None)
 
-    # Try to get it from the system keychain next 
+    # Try to get it from the system keychain next
     if not username and not password:
         try:
             import keyring

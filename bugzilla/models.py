@@ -1,7 +1,6 @@
 from remoteobjects import RemoteObject as RemoteObject_, fields
 
 from .fields import StringBoolean, Datetime
-import urlparse
 
 
 # The datetime format is inconsistent.

@@ -1,5 +1,7 @@
-from bugzilla.models import *
-from bugzilla.utils import *
+import os
+
+from bugzilla.models import Bug, BugSearch
+from bugzilla.utils import urljoin, qs
 
 class InvalidAPI_ROOT(Exception):
     def __str__(self):
@@ -9,7 +11,7 @@ class InvalidAPI_ROOT(Exception):
 
 class BugzillaAgent(object):
     def __init__(self, api_root=None, username=None, password=None):
-        
+
         if not api_root:
             api_root = os.environ.get('BZ_API_ROOT')
             if not api_root:
