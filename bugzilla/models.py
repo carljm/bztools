@@ -152,14 +152,14 @@ class Attachment(RemoteObject):
 class Comment(RemoteObject):
 
     id = fields.Field()
-    author = creator = fields.Object('User')
+    creator = fields.Object('User')
     creation_time = Datetime(DATETIME_FORMAT_WITH_SECONDS)
     text = fields.Field()
     is_private = StringBoolean()
 
     def __repr__(self):
         return '<Comment by %s on %s>' % (
-            self.author, self.creation_time.strftime(DATETIME_FORMAT))
+            self.creator, self.creation_time.strftime(DATETIME_FORMAT))
 
     def __str__(self):
         return self.text
